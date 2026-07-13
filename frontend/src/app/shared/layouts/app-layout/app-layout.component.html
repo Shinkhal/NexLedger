@@ -1,0 +1,26 @@
+<div class="min-h-screen flex flex-col bg-neutral-bg dark:bg-slate-950 text-text-primary dark:text-slate-200 transition-colors duration-200">
+  <!-- Top Navigation Bar -->
+  <app-sidebar class="w-full"></app-sidebar>
+
+  <!-- Viewport Main Content -->
+  <main class="flex-grow overflow-y-auto">
+    <div class="p-6 md:p-8 max-w-7xl w-full mx-auto">
+      <router-outlet></router-outlet>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="w-full border-t border-border-gray dark:border-slate-800 py-6 mt-auto">
+      <div class="max-w-7xl w-full mx-auto px-6 md:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded bg-primary text-white flex items-center justify-center font-bold text-xs">
+            N
+          </div>
+          <p class="text-sm font-semibold text-text-primary dark:text-slate-300">NexLedger</p>
+        </div>
+        <p class="text-xs font-medium text-text-muted dark:text-slate-500 text-center sm:text-right">
+          &copy; {{ currentYear }} NexLedger. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </main>
+</div>

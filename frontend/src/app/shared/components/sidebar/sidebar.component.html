@@ -1,0 +1,295 @@
+<!-- Desktop Glassmorphic Top Navigation Header (md+) -->
+<header class="hidden md:block sticky top-0 z-50 w-full bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-border-gray dark:border-slate-900 text-text-primary dark:text-slate-200">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    
+    <!-- Left Section: Logo & Brand -->
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-2.5 cursor-pointer" routerLink="/dashboard">
+        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-black text-lg shadow-sm">
+          N
+        </div>
+        <span class="text-xl font-bold tracking-tight text-text-primary dark:text-white font-display">NexLedger</span>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex items-center gap-1.5 ml-4">
+        <a routerLink="/dashboard" 
+           routerLinkActive="active-link"
+           class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-primary dark:hover:text-white transition-all text-xs font-bold select-none cursor-pointer">
+          Dashboard
+        </a>
+        <a routerLink="/records" 
+           routerLinkActive="active-link"
+           class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-primary dark:hover:text-white transition-all text-xs font-bold select-none cursor-pointer">
+          Ledger Records
+        </a>
+        @if (isAdmin()) {
+          <a routerLink="/admin/users" 
+             routerLinkActive="active-link"
+             class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-primary dark:hover:text-white transition-all text-xs font-bold select-none cursor-pointer">
+            Manage Users
+          </a>
+        }
+        <a routerLink="/profile" 
+           routerLinkActive="active-link"
+           class="flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 hover:text-primary dark:hover:text-white transition-all text-xs font-bold select-none cursor-pointer">
+          My Profile
+        </a>
+      </nav>
+    </div>
+
+    <!-- Right Section: Theme Toggle & User Avatar -->
+    <div class="flex items-center gap-4">
+      <!-- Theme Toggle -->
+      <button (click)="toggleTheme()" 
+              class="p-2 rounded-xl text-text-secondary dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer"
+              [title]="isDarkMode() ? 'Switch to Light Mode' : 'Switch to Dark Mode'">
+        @if (isDarkMode()) {
+          <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+          </svg>
+        } @else {
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        }
+      </button>
+
+      <!-- User Profile Summary Dropdown/Capsule -->
+      @if (authService.currentUser(); as user) {
+        <div class="flex items-center gap-3 pl-3 border-l border-border-gray dark:border-slate-800">
+          <div class="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm select-none bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800">
+            @if (user.avatar === 'avatar-1') {
+              <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                <defs>
+                  <linearGradient id="av1-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#818cf8" />
+                    <stop offset="100%" stop-color="#4f46e5" />
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="50" fill="url(#av1-nav)" />
+                <path d="M50 28a13 13 0 100 26 13 13 0 000-26zM24 76a26 26 0 0152 0" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
+              </svg>
+            } @else if (user.avatar === 'avatar-2') {
+              <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                <defs>
+                  <linearGradient id="av2-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#34d399" />
+                    <stop offset="100%" stop-color="#059669" />
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="50" fill="url(#av2-nav)" />
+                <path d="M50 25L32 33v22c0 11 8 21 18 24 10-3 18-13 18-24V33l-18-8z" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" />
+              </svg>
+            } @else if (user.avatar === 'avatar-3') {
+              <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                <defs>
+                  <linearGradient id="av3-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f87171" />
+                    <stop offset="100%" stop-color="#dc2626" />
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="50" fill="url(#av3-nav)" />
+                <path d="M54 22L34 50h18v28l20-28H54V22z" fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+              </svg>
+            } @else if (user.avatar === 'avatar-4') {
+              <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                <defs>
+                  <linearGradient id="av4-nav" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#38bdf8" />
+                    <stop offset="100%" stop-color="#0284c7" />
+                  </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="50" fill="url(#av4-nav)" />
+                <path d="M50 22L28 40l22 38 22-38-22-18z M28 40h44" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" />
+              </svg>
+            } @else {
+              <div class="w-full h-full bg-primary-subtle dark:bg-indigo-950/45 text-primary dark:text-indigo-400 flex items-center justify-center font-black text-sm select-none">
+                {{ user.name.slice(0, 1).toUpperCase() }}
+              </div>
+            }
+          </div>
+          <div class="min-w-0">
+            <p class="text-xs font-bold truncate text-text-primary dark:text-white leading-tight">{{ user.name }}</p>
+            <p class="text-[10px] text-text-secondary dark:text-slate-450 font-semibold uppercase tracking-wider leading-none mt-0.5">{{ getUserRoleLabel(user.role) }}</p>
+          </div>
+          <button (click)="logout()" 
+                  class="ml-1.5 p-1.5 text-slate-400 hover:text-rose-500 dark:hover:text-rose-450 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-lg transition-colors cursor-pointer"
+                  title="Logout">
+            <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Navigation (Top Header) -->
+<header class="md:hidden flex items-center justify-between h-16 px-6 bg-white dark:bg-slate-900 border-b border-border-gray dark:border-slate-800 text-text-primary dark:text-slate-200 sticky top-0 z-30 w-full">
+  <div class="flex items-center gap-2.5 cursor-pointer" routerLink="/dashboard">
+    <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-black text-lg">
+      N
+    </div>
+    <span class="text-xl font-bold tracking-tight text-text-primary dark:text-white font-display">NexLedger</span>
+  </div>
+  
+  <div class="flex items-center gap-3">
+    <button (click)="toggleTheme()" class="p-2 rounded-lg text-text-secondary dark:text-slate-400 cursor-pointer">
+      @if (isDarkMode()) {
+        <svg class="w-5 h-5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+        </svg>
+      } @else {
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      }
+    </button>
+    
+    <button (click)="toggleMobileMenu()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-text-secondary dark:text-slate-350 cursor-pointer" aria-label="Toggle menu">
+      <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile Drawer Modal (Overlaps page) -->
+@if (isMobileOpen()) {
+  <div class="fixed inset-0 z-40 md:hidden flex">
+    <!-- Backdrop -->
+    <!-- eslint-disable-next-line @angular-eslint/template/interactive-supports-focus, @angular-eslint/template/click-events-have-key-events -->
+    <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity" (click)="closeMobileMenu()"></div>
+
+    <!-- Drawer Panel -->
+    <div class="relative flex flex-col w-4/5 max-w-sm bg-white dark:bg-slate-900 h-full shadow-2xl p-6 transition-all duration-300 z-50 text-text-primary dark:text-slate-200 animate-slide-in">
+      <!-- Close Button -->
+      <div class="flex items-center justify-between mb-8">
+        <div class="flex items-center gap-2.5 cursor-pointer" (click)="closeMobileMenu()" (keydown.enter)="closeMobileMenu()" routerLink="/dashboard" tabindex="0">
+          <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-black text-lg">
+            N
+          </div>
+          <span class="text-xl font-bold tracking-tight text-text-primary dark:text-white font-display">NexLedger</span>
+        </div>
+        <button (click)="closeMobileMenu()" class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation links -->
+      <nav class="flex-grow space-y-1.5" (click)="closeMobileMenu()" (keydown.enter)="closeMobileMenu()" tabindex="0">
+        <a routerLink="/dashboard" 
+           routerLinkActive="active-link"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer text-sm font-bold">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2v-4zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2v-4z" />
+          </svg>
+          Dashboard
+        </a>
+
+        <a routerLink="/records" 
+           routerLinkActive="active-link"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer text-sm font-bold">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+          Ledger Records
+        </a>
+
+        @if (isAdmin()) {
+          <a routerLink="/admin/users" 
+             routerLinkActive="active-link"
+             class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer text-sm font-bold">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            Manage Users
+          </a>
+        }
+
+        <a routerLink="/profile" 
+           routerLinkActive="active-link"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer text-sm font-bold">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          My Profile
+        </a>
+      </nav>
+
+      <!-- Mobile User Info & Logout -->
+      @if (authService.currentUser(); as user) {
+        <div class="mt-auto border-t border-border-gray dark:border-slate-800 pt-6 flex flex-col gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center shadow-sm select-none bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800">
+              @if (user.avatar === 'avatar-1') {
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                  <defs>
+                    <linearGradient id="av1-mob" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#818cf8" />
+                      <stop offset="100%" stop-color="#4f46e5" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="50" fill="url(#av1-mob)" />
+                  <path d="M50 28a13 13 0 100 26 13 13 0 000-26zM24 76a26 26 0 0152 0" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
+                </svg>
+              } @else if (user.avatar === 'avatar-2') {
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                  <defs>
+                    <linearGradient id="av2-mob" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#34d399" />
+                      <stop offset="100%" stop-color="#059669" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="50" fill="url(#av2-mob)" />
+                  <path d="M50 25L32 33v22c0 11 8 21 18 24 10-3 18-13 18-24V33l-18-8z" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" />
+                </svg>
+              } @else if (user.avatar === 'avatar-3') {
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                  <defs>
+                    <linearGradient id="av3-mob" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#f87171" />
+                      <stop offset="100%" stop-color="#dc2626" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="50" fill="url(#av3-mob)" />
+                  <path d="M54 22L34 50h18v28l20-28H54V22z" fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+                </svg>
+              } @else if (user.avatar === 'avatar-4') {
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                  <defs>
+                    <linearGradient id="av4-mob" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#38bdf8" />
+                      <stop offset="100%" stop-color="#0284c7" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="50" fill="url(#av4-mob)" />
+                  <path d="M50 22L28 40l22 38 22-38-22-18z M28 40h44" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" />
+                </svg>
+              } @else {
+                <div class="w-full h-full bg-primary flex items-center justify-center text-white font-black text-base select-none">
+                  {{ user.name.slice(0, 1).toUpperCase() }}
+                </div>
+              }
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-text-primary dark:text-white">{{ user.name }}</p>
+              <p class="text-xs text-text-secondary dark:text-slate-400 font-medium">{{ getUserRoleLabel(user.role) }}</p>
+            </div>
+          </div>
+          <button (click)="logout(); closeMobileMenu()" 
+                  class="w-full flex items-center justify-center gap-2.5 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-950/20 dark:hover:text-rose-450 transition-colors text-sm font-semibold cursor-pointer">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+}
