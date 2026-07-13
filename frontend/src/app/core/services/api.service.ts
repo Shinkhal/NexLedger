@@ -12,7 +12,7 @@ export class ApiService {
   protected readonly http = inject(HttpClient);
   protected readonly baseUrl = environment.apiUrl;
 
-  get<T>(path: string, params?: Record<string, string>): Observable<ApiResponse<T>> {
+  get<T>(path: string, params?: Record<string, any>): Observable<ApiResponse<T>> {
     let httpParams = new HttpParams();
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
@@ -37,6 +37,6 @@ export class ApiService {
   }
 
   query<T>(path: string, body?: AnyBody): Observable<ApiResponse<T>> {
-    return this.http.request<ApiResponse<T>>('QUERY', `${this.baseUrl}${path}`, { body });
+    return this.get<T>(path, body);
   }
 }
