@@ -1,0 +1,476 @@
+<div class="space-y-8 pb-12 animate-fade-in">
+  
+  <!-- Profile Page Header Card -->
+  <div class="bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800 rounded-2xl shadow-whisper overflow-hidden">
+    <!-- Cover Banner Image -->
+    <div class="relative h-36 sm:h-44 w-full overflow-hidden bg-slate-100 dark:bg-slate-950">
+      <img src="/evening.png" alt="Cover Banner" class="w-full h-full object-cover select-none pointer-events-none opacity-85 dark:opacity-75 blur-[1px]" />
+      <div class="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-900 to-transparent"></div>
+    </div>
+
+    <!-- Header Details Overlay -->
+    <div class="relative px-6 pb-6 -mt-14 sm:-mt-16 flex flex-col sm:flex-row sm:items-end gap-5 justify-between z-10">
+      <div class="flex flex-col sm:flex-row items-center sm:items-end gap-4 text-center sm:text-left">
+        <!-- Big Active Avatar Container with White Border -->
+        <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl border-4 border-white dark:border-slate-900 bg-white dark:bg-slate-900 shadow-md flex items-center justify-center overflow-hidden p-1.5 flex-shrink-0">
+          @if (selectedAvatar() === 'avatar-1') {
+            <!-- Avatar 1 SVG: User Standard -->
+            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+              <defs>
+                <linearGradient id="av1-hdr" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#818cf8" />
+                  <stop offset="100%" stop-color="#4f46e5" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="50" fill="url(#av1-hdr)" />
+              <path d="M50 28a13 13 0 100 26 13 13 0 000-26zM24 76a26 26 0 0152 0" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
+            </svg>
+          } @else if (selectedAvatar() === 'avatar-2') {
+            <!-- Avatar 2 SVG: Shield -->
+            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+              <defs>
+                <linearGradient id="av2-hdr" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#34d399" />
+                  <stop offset="100%" stop-color="#059669" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="50" fill="url(#av2-hdr)" />
+              <path d="M50 25L32 33v22c0 11 8 21 18 24 10-3 18-13 18-24V33l-18-8z" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" />
+            </svg>
+          } @else if (selectedAvatar() === 'avatar-3') {
+            <!-- Avatar 3 SVG: Bolt -->
+            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+              <defs>
+                <linearGradient id="av3-hdr" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f87171" />
+                  <stop offset="100%" stop-color="#dc2626" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="50" fill="url(#av3-hdr)" />
+              <path d="M54 22L34 50h18v28l20-28H54V22z" fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+            </svg>
+          } @else if (selectedAvatar() === 'avatar-4') {
+            <!-- Avatar 4 SVG: Gem -->
+            <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+              <defs>
+                <linearGradient id="av4-hdr" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#38bdf8" />
+                  <stop offset="100%" stop-color="#0284c7" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="50" fill="url(#av4-hdr)" />
+              <path d="M50 22L28 40l22 38 22-38-22-18z M28 40h44" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" />
+            </svg>
+          }
+        </div>
+
+        <div class="space-y-1 mb-2 sm:mb-1">
+          <h1 class="text-2xl font-extrabold text-text-primary dark:text-white font-display tracking-tight leading-none">
+            {{ currentUser()?.name }}
+          </h1>
+          <p class="text-xs font-semibold text-text-secondary dark:text-slate-450 leading-none">
+            {{ currentUser()?.email }}
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-center gap-3">
+        <span class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-primary-subtle text-primary border border-primary/10 select-none">
+          {{ getRoleLabel(currentUser()?.role) }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Two-Column Tabbed Panel -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+    
+    <!-- Left Column Navigation (md+) -->
+    <div class="flex flex-col gap-1.5 w-full">
+      <button (click)="activeSubTab.set('personal')"
+              [class.bg-white]="activeSubTab() === 'personal'"
+              [class.dark:bg-slate-900]="activeSubTab() === 'personal'"
+              [class.text-primary]="activeSubTab() === 'personal'"
+              [class.dark:text-indigo-400]="activeSubTab() === 'personal'"
+              [class.shadow-sm]="activeSubTab() === 'personal'"
+              [class.border-border-gray]="activeSubTab() === 'personal'"
+              [class.dark:border-slate-800]="activeSubTab() === 'personal'"
+              [class.text-text-secondary]="activeSubTab() !== 'personal'"
+              [class.border-transparent]="activeSubTab() !== 'personal'"
+              class="w-full text-left px-4 py-3 rounded-xl border font-bold text-xs transition-all flex items-center gap-3 cursor-pointer select-none">
+        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        Personal Information
+      </button>
+
+      <button (click)="activeSubTab.set('security')"
+              [class.bg-white]="activeSubTab() === 'security'"
+              [class.dark:bg-slate-900]="activeSubTab() === 'security'"
+              [class.text-primary]="activeSubTab() === 'security'"
+              [class.dark:text-indigo-400]="activeSubTab() === 'security'"
+              [class.shadow-sm]="activeSubTab() === 'security'"
+              [class.border-border-gray]="activeSubTab() === 'security'"
+              [class.dark:border-slate-800]="activeSubTab() === 'security'"
+              [class.text-text-secondary]="activeSubTab() !== 'security'"
+              [class.border-transparent]="activeSubTab() !== 'security'"
+              class="w-full text-left px-4 py-3 rounded-xl border font-bold text-xs transition-all flex items-center gap-3 cursor-pointer select-none">
+        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        Security & Password
+      </button>
+
+      <button (click)="activeSubTab.set('sessions')"
+              [class.bg-white]="activeSubTab() === 'sessions'"
+              [class.dark:bg-slate-900]="activeSubTab() === 'sessions'"
+              [class.text-primary]="activeSubTab() === 'sessions'"
+              [class.dark:text-indigo-400]="activeSubTab() === 'sessions'"
+              [class.shadow-sm]="activeSubTab() === 'sessions'"
+              [class.border-border-gray]="activeSubTab() === 'sessions'"
+              [class.dark:border-slate-800]="activeSubTab() === 'sessions'"
+              [class.text-text-secondary]="activeSubTab() !== 'sessions'"
+              [class.border-transparent]="activeSubTab() !== 'sessions'"
+              class="w-full text-left px-4 py-3 rounded-xl border font-bold text-xs transition-all flex items-center gap-3 cursor-pointer select-none">
+        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        Active Sessions Log
+      </button>
+
+      <hr class="my-2 border-border-gray dark:border-slate-800" />
+
+      <!-- Logout CTA inside navigation -->
+      <button (click)="logout()" 
+              class="w-full text-left px-4 py-3 rounded-xl border border-transparent text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 font-bold text-xs transition-all flex items-center gap-3 cursor-pointer select-none">
+        <svg class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+        Logout Account
+      </button>
+    </div>
+
+    <!-- Right Column Tab Content -->
+    <div class="md:col-span-3 bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800 rounded-2xl p-6 shadow-whisper">
+      
+      <!-- SUB-TAB 1: PERSONAL INFORMATION -->
+      @if (activeSubTab() === 'personal') {
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-text-primary dark:text-white font-display">Personal Details</h3>
+            <p class="text-xs text-text-secondary dark:text-slate-400">Configure public credentials and display avatar graphics</p>
+          </div>
+
+          <!-- Avatar Illustration Picker -->
+          <div class="space-y-3 p-4 bg-slate-50 dark:bg-slate-950/40 border border-border-gray dark:border-slate-800 rounded-xl">
+            <div>
+              <h4 class="text-xs font-bold text-text-primary dark:text-white">Choose Avatar Theme</h4>
+              <p class="text-[10px] text-text-secondary dark:text-slate-500">Select a vector identity to represent your corporate account</p>
+            </div>
+            
+            <div class="flex gap-4">
+              <!-- Selection avatar buttons -->
+              <button type="button"
+                      (click)="selectedAvatar.set('avatar-1')"
+                      [class.ring-2]="selectedAvatar() === 'avatar-1'"
+                      [class.ring-primary]="selectedAvatar() === 'avatar-1'"
+                      class="w-14 h-14 rounded-xl overflow-hidden hover:scale-105 transition-all bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800 p-1 flex-shrink-0 cursor-pointer">
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                  <defs>
+                    <linearGradient id="av1-pic" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#818cf8" />
+                      <stop offset="100%" stop-color="#4f46e5" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="50" fill="url(#av1-pic)" />
+                  <path d="M50 28a13 13 0 100 26 13 13 0 000-26zM24 76a26 26 0 0152 0" stroke="#ffffff" stroke-width="6" stroke-linecap="round" />
+                </svg>
+              </button>
+
+              <button type="button"
+                      (click)="selectedAvatar.set('avatar-2')"
+                      [class.ring-2]="selectedAvatar() === 'avatar-2'"
+                      [class.ring-primary]="selectedAvatar() === 'avatar-2'"
+                      class="w-14 h-14 rounded-xl overflow-hidden hover:scale-105 transition-all bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800 p-1 flex-shrink-0 cursor-pointer">
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                  <defs>
+                    <linearGradient id="av2-pic" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#34d399" />
+                      <stop offset="100%" stop-color="#059669" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="50" fill="url(#av2-pic)" />
+                  <path d="M50 25L32 33v22c0 11 8 21 18 24 10-3 18-13 18-24V33l-18-8z" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" />
+                </svg>
+              </button>
+
+              <button type="button"
+                      (click)="selectedAvatar.set('avatar-3')"
+                      [class.ring-2]="selectedAvatar() === 'avatar-3'"
+                      [class.ring-primary]="selectedAvatar() === 'avatar-3'"
+                      class="w-14 h-14 rounded-xl overflow-hidden hover:scale-105 transition-all bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800 p-1 flex-shrink-0 cursor-pointer">
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                  <defs>
+                    <linearGradient id="av3-pic" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#f87171" />
+                      <stop offset="100%" stop-color="#dc2626" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="50" fill="url(#av3-pic)" />
+                  <path d="M54 22L34 50h18v28l20-28H54V22z" fill="#ffffff" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" />
+                </svg>
+              </button>
+
+              <button type="button"
+                      (click)="selectedAvatar.set('avatar-4')"
+                      [class.ring-2]="selectedAvatar() === 'avatar-4'"
+                      [class.ring-primary]="selectedAvatar() === 'avatar-4'"
+                      class="w-14 h-14 rounded-xl overflow-hidden hover:scale-105 transition-all bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800 p-1 flex-shrink-0 cursor-pointer">
+                <svg class="w-full h-full" viewBox="0 0 100 100" fill="none">
+                  <defs>
+                    <linearGradient id="av4-pic" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#38bdf8" />
+                      <stop offset="100%" stop-color="#0284c7" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="50" fill="url(#av4-pic)" />
+                  <path d="M50 22L28 40l22 38 22-38-22-18z M28 40h44" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <form [formGroup]="profileForm" (ngSubmit)="onUpdateProfile()" class="space-y-4">
+            <!-- Full Name -->
+            <div class="space-y-1.5">
+              <label for="prof-name" class="text-xs font-bold text-text-secondary dark:text-slate-350">Full Name</label>
+              <input id="prof-name" 
+                     type="text" 
+                     formControlName="name"
+                     placeholder="John Doe"
+                     class="w-full px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                     [class.border-red-500]="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" />
+              @if (profileForm.get('name')?.invalid && profileForm.get('name')?.touched) {
+                <p class="text-xs text-red-500 font-medium">Name is required</p>
+              }
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Corporate Email -->
+              <div class="space-y-1.5">
+                <label for="prof-email" class="text-xs font-bold text-text-secondary dark:text-slate-350">Corporate Email (Read-only)</label>
+                <input id="prof-email" 
+                       type="email" 
+                       [value]="currentUser()?.email"
+                       readonly
+                       class="w-full px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 text-slate-400 dark:text-slate-400 focus:outline-none text-sm cursor-not-allowed" />
+              </div>
+
+              <!-- Phone Number -->
+              <div class="space-y-1.5">
+                <label for="prof-phone" class="text-xs font-bold text-text-secondary dark:text-slate-350">Phone Number</label>
+                <input id="prof-phone" 
+                       type="text" 
+                       formControlName="phoneNumber"
+                       placeholder="+1 (555) 000-0000"
+                       class="w-full px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all" />
+              </div>
+            </div>
+
+            <!-- Save Details -->
+            <button type="submit" 
+                    [disabled]="profileForm.invalid || loadingProfile()"
+                    class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer">
+              @if (loadingProfile()) {
+                <svg class="animate-spin h-4.5 w-4.5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Saving Details...
+              } @else {
+                Save Profile Details
+              }
+            </button>
+          </form>
+        </div>
+      }
+
+      <!-- SUB-TAB 2: SECURITY & PASSWORD -->
+      @if (activeSubTab() === 'security') {
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-text-primary dark:text-white font-display">Security Credentials</h3>
+            <p class="text-xs text-text-secondary dark:text-slate-400">Regularly update your credentials to safeguard transaction data</p>
+          </div>
+
+          <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()" class="space-y-4">
+            <!-- Current Password -->
+            <div class="space-y-1.5">
+              <label for="prof-curr" class="text-xs font-bold text-text-secondary dark:text-slate-350">Current Password</label>
+              <div class="relative">
+                <input id="prof-curr" 
+                       [type]="showCurrentPass() ? 'text' : 'password'" 
+                       formControlName="currentPassword"
+                       placeholder="••••••••"
+                       class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                       [class.border-red-500]="passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched" />
+                <button type="button" 
+                        (click)="showCurrentPass.set(!showCurrentPass())"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-450 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                  @if (showCurrentPass()) {
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                    </svg>
+                  } @else {
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542 7z" />
+                    </svg>
+                  }
+                </button>
+              </div>
+              @if (passwordForm.get('currentPassword')?.invalid && passwordForm.get('currentPassword')?.touched) {
+                <p class="text-xs text-red-500 font-medium">Current password is required</p>
+              }
+            </div>
+
+            <!-- New Password -->
+            <div class="space-y-1.5">
+              <label for="prof-new" class="text-xs font-bold text-text-secondary dark:text-slate-350">New Password</label>
+              <div class="relative">
+                <input id="prof-new" 
+                       [type]="showNewPass() ? 'text' : 'password'" 
+                       formControlName="newPassword"
+                       placeholder="••••••••"
+                       class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                       [class.border-red-500]="passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched" />
+                <button type="button" 
+                        (click)="showNewPass.set(!showNewPass())"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-455 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                  @if (showNewPass()) {
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                    </svg>
+                  } @else {
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542 7z" />
+                    </svg>
+                  }
+                </button>
+              </div>
+              @if (passwordForm.get('newPassword')?.invalid && passwordForm.get('newPassword')?.touched) {
+                <p class="text-xs text-red-500 font-medium">New password must be at least 8 characters</p>
+              }
+            </div>
+
+            <!-- Password strength indicator bar -->
+            @if (passwordForm.get('newPassword')?.value) {
+              <div class="space-y-1.5">
+                <div class="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-text-secondary">
+                  <span>Credential Security Strength</span>
+                  <span class="text-primary dark:text-indigo-400">{{ passwordStrength().label }}</span>
+                </div>
+                <!-- strength track -->
+                <div class="w-full h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                  <div class="h-full rounded-full transition-all duration-300 animate-pulse"
+                       [class]="passwordStrength().colorClass"></div>
+                </div>
+              </div>
+            }
+
+            <!-- Confirm New Password -->
+            <div class="space-y-1.5">
+              <label for="prof-conf" class="text-xs font-bold text-text-secondary dark:text-slate-350">Confirm New Password</label>
+              <div class="relative">
+                <input id="prof-conf" 
+                       [type]="showConfirmPass() ? 'text' : 'password'" 
+                       formControlName="confirmPassword"
+                       placeholder="••••••••"
+                       class="w-full pl-4 pr-10 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+                       [class.border-red-500]="passwordForm.hasError('passwordMismatch') && passwordForm.get('confirmPassword')?.touched" />
+                <button type="button" 
+                        (click)="showConfirmPass.set(!showConfirmPass())"
+                        class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-455 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer">
+                  @if (showConfirmPass()) {
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                    </svg>
+                  } @else {
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542 7z" />
+                    </svg>
+                  }
+                </button>
+              </div>
+              @if (passwordForm.hasError('passwordMismatch') && passwordForm.get('confirmPassword')?.touched) {
+                <p class="text-xs text-red-500 font-medium">Passwords do not match</p>
+              }
+            </div>
+
+            <!-- Change Password Button -->
+            <button type="submit" 
+                    [disabled]="passwordForm.invalid || loadingPassword()"
+                    class="w-full inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer">
+              @if (loadingPassword()) {
+                <svg class="animate-spin h-4.5 w-4.5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Changing Password...
+              } @else {
+                Update Session Password
+              }
+            </button>
+          </form>
+        </div>
+      }
+
+      <!-- SUB-TAB 3: ACTIVE SESSIONS AUDIT LOG -->
+      @if (activeSubTab() === 'sessions') {
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-lg font-bold text-text-primary dark:text-white font-display">Active Session Indicators</h3>
+            <p class="text-xs text-text-secondary dark:text-slate-400">View originating telemetry and system logs for your active login token</p>
+          </div>
+
+          <!-- Session List Container -->
+          <div class="border border-border-gray dark:border-slate-800 rounded-2xl overflow-hidden divide-y divide-border-gray dark:divide-slate-800">
+            <!-- Active Session Row -->
+            <div class="p-5 flex items-start gap-4 hover:bg-slate-50/50 dark:hover:bg-slate-850/10 transition-colors">
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 dark:text-emerald-450 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5.5 h-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div class="space-y-1 min-w-0">
+                <div class="flex items-center gap-2">
+                  <h4 class="text-sm font-bold text-text-primary dark:text-white truncate">{{ currentDevice() }}</h4>
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] font-black bg-emerald-50 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-450 border border-emerald-200 dark:border-emerald-900/40 uppercase tracking-wider">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping"></span>
+                    Current Active Session
+                  </span>
+                </div>
+                <p class="text-xs text-text-secondary dark:text-slate-400 font-medium">
+                  IP Origin: 127.0.0.1 (Local Host) • Session Token Active
+                </p>
+                <p class="text-[10px] text-text-muted dark:text-slate-500 font-bold uppercase tracking-wider">
+                  Authentication Time: {{ currentUser()?.lastLoginAt ? (currentUser()?.lastLoginAt | date:'medium') : 'Just now' }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Audit Logs Summary link -->
+            <div class="p-4 bg-slate-50/50 dark:bg-slate-950/20 text-center">
+              <p class="text-xs text-text-secondary dark:text-slate-400">
+                Security event notifications and action auditing are logged in the database.
+              </p>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

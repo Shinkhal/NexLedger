@@ -1,0 +1,258 @@
+<div class="space-y-6 pb-12 animate-fade-in">
+  <!-- Header and Primary Action -->
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-extrabold tracking-tight text-text-primary dark:text-white font-display">Ledger Records</h1>
+      <p class="text-sm text-text-secondary dark:text-slate-400 font-medium">Search, filter, and manage historical financial transactions</p>
+    </div>
+    @if (isAdmin()) {
+      <button (click)="openAddModal()" 
+              class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-whisper hover:shadow-md transition-all cursor-pointer">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+        </svg>
+        Add Record
+      </button>
+    }
+  </div>
+
+  <!-- Search and Toggle Filters -->
+  <div class="bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800 rounded-2xl p-4 shadow-whisper space-y-4">
+    <div class="flex flex-col md:flex-row md:items-center gap-4">
+      <!-- Search Input -->
+      <div class="flex-grow relative">
+        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 pointer-events-none">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </span>
+        <input type="text"
+               [ngModel]="search()"
+               (ngModelChange)="search.set($event); applyFilters()"
+               placeholder="Search by description, categories, or tags..."
+               class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary focus:border-transparent transition-all text-sm" />
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-3">
+        <button (click)="toggleFilterPanel()" 
+                class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 text-text-secondary dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800/40 text-sm font-semibold transition-all cursor-pointer">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+          {{ showFilters() ? 'Hide Filters' : 'Show Filters' }}
+        </button>
+
+        <button (click)="resetFilters()" 
+                class="px-4 py-2.5 rounded-xl text-text-secondary hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors cursor-pointer">
+          Clear All
+        </button>
+      </div>
+    </div>
+
+    <!-- Collapsible Advanced Filters Drawer -->
+    @if (showFilters()) {
+      <div class="border-t border-border-gray dark:border-slate-800 pt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in">
+        <!-- Record Type Filter -->
+        <div class="space-y-1.5">
+          <label for="filter-type" class="text-xs font-bold text-text-secondary dark:text-slate-350">Transaction Type</label>
+          <select id="filter-type" [ngModel]="type()"
+                  (ngModelChange)="type.set($event); applyFilters()"
+                  class="w-full px-3 py-2 rounded-xl border border-border-gray dark:border-slate-800 bg-white dark:bg-slate-900 text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm cursor-pointer transition-all">
+            <option value="ALL">All Transactions</option>
+            <option value="INCOME">Income / Inflows</option>
+            <option value="EXPENSE">Expense / Outflows</option>
+          </select>
+        </div>
+
+        <!-- Category Input -->
+        <div class="space-y-1.5">
+          <label for="filter-category" class="text-xs font-bold text-text-secondary dark:text-slate-350">Category Filter</label>
+          <input id="filter-category" type="text"
+                 [ngModel]="category()"
+                 (ngModelChange)="category.set($event); applyFilters()"
+                 placeholder="e.g. Salary, Utilities, Food"
+                 class="w-full px-3 py-2 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all" />
+        </div>
+
+        <!-- Start Date -->
+        <div class="space-y-1.5">
+          <label for="filter-date-from" class="text-xs font-bold text-text-secondary dark:text-slate-350">Date From</label>
+          <input id="filter-date-from" type="date"
+                 [ngModel]="startDate()"
+                 (ngModelChange)="startDate.set($event); applyFilters()"
+                 class="w-full px-3 py-2 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm cursor-text transition-all" />
+        </div>
+
+        <!-- End Date -->
+        <div class="space-y-1.5">
+          <label for="filter-date-to" class="text-xs font-bold text-text-secondary dark:text-slate-350">Date To</label>
+          <input id="filter-date-to" type="date"
+                 [ngModel]="endDate()"
+                 (ngModelChange)="endDate.set($event); applyFilters()"
+                 class="w-full px-3 py-2 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm cursor-text transition-all" />
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Records Table Card -->
+  <!-- Records Table Card -->
+  <div class="bg-white dark:bg-slate-900 border border-border-gray dark:border-slate-800 rounded-2xl shadow-whisper overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full border-collapse border border-border-gray dark:border-slate-800/80 text-left">
+        <thead>
+          <tr class="bg-slate-100/70 dark:bg-slate-950/60 text-text-secondary dark:text-slate-350 text-xs font-extrabold uppercase tracking-wider border-b border-border-gray dark:border-slate-800">
+            <th class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80 select-none">
+              <div class="flex items-center gap-1.5">
+                Date
+                <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                </svg>
+              </div>
+            </th>
+            <th class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80 select-none">
+              <div class="flex items-center gap-1.5">
+                Description
+                <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                </svg>
+              </div>
+            </th>
+            <th class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80 select-none">
+              <div class="flex items-center gap-1.5">
+                Category
+                <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                </svg>
+              </div>
+            </th>
+            <th class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80 select-none">
+              Tags
+            </th>
+            <th class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80 text-right select-none">
+              <div class="flex items-center justify-end gap-1.5">
+                Amount
+                <svg class="w-3 h-3 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                </svg>
+              </div>
+            </th>
+            @if (isAdmin()) {
+              <th class="py-3.5 px-5 text-center select-none">Actions</th>
+            }
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-border-gray dark:divide-slate-800/80 text-sm">
+          @if (loading()) {
+            @for (x of [1, 2, 3, 4, 5]; track x) {
+              <tr class="animate-pulse">
+                <td class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80"><div class="h-4 bg-slate-200 dark:bg-slate-800 rounded w-20"></div></td>
+                <td class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80"><div class="h-4 bg-slate-200 dark:bg-slate-800 rounded w-44"></div></td>
+                <td class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80"><div class="h-4 bg-slate-200 dark:bg-slate-800 rounded w-24"></div></td>
+                <td class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80"><div class="h-4 bg-slate-200 dark:bg-slate-800 rounded w-32"></div></td>
+                <td class="py-3.5 px-5 border-r border-border-gray dark:border-slate-800/80"><div class="h-4 bg-slate-200 dark:bg-slate-800 rounded w-16 ml-auto"></div></td>
+                @if (isAdmin()) {
+                  <td class="py-3.5 px-5"><div class="h-8 bg-slate-200 dark:bg-slate-800 rounded-lg w-16 mx-auto"></div></td>
+                }
+              </tr>
+            }
+          } @else if (records().length === 0) {
+            <tr>
+              <td [attr.colspan]="isAdmin() ? 6 : 5" class="py-12 text-center text-text-muted font-medium">
+                No financial records match your current filters.
+              </td>
+            </tr>
+          } @else {
+            @for (rec of records(); track rec._id; let idx = $index) {
+              <tr [class.bg-slate-50/20]="idx % 2 === 1"
+                  [class.dark:bg-slate-800/10]="idx % 2 === 1"
+                  class="hover:bg-slate-50/60 dark:hover:bg-slate-800/25 text-text-primary dark:text-slate-300 transition-colors">
+                <td class="py-3 px-5 border-r border-border-gray dark:border-slate-800/80 whitespace-nowrap font-medium text-xs font-mono">
+                  {{ rec.date | date:'mediumDate' }}
+                </td>
+                <td class="py-3 px-5 border-r border-border-gray dark:border-slate-800/80 font-semibold truncate max-w-xs">
+                  {{ rec.description }}
+                </td>
+                <td class="py-3 px-5 border-r border-border-gray dark:border-slate-800/80 whitespace-nowrap">
+                  <span class="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[10px] font-bold text-text-secondary dark:text-slate-400 capitalize border border-border-gray/30 dark:border-slate-700/30">
+                    {{ rec.category.toLowerCase() }}
+                  </span>
+                </td>
+                <td class="py-3 px-5 border-r border-border-gray dark:border-slate-800/80">
+                  <div class="flex flex-wrap gap-1.5">
+                    @for (tag of rec.tags; track tag) {
+                      <span class="px-1.5 py-0.5 rounded bg-primary-subtle text-primary dark:text-indigo-400 text-[9px] font-bold">
+                        {{ tag }}
+                      </span>
+                    }
+                  </div>
+                </td>
+                <td [class.bg-emerald-50/10]="rec.type === 'INCOME'"
+                    [class.dark:bg-emerald-950/5]="rec.type === 'INCOME'"
+                    [class.bg-rose-50/10]="rec.type === 'EXPENSE'"
+                    [class.dark:bg-rose-950/5]="rec.type === 'EXPENSE'"
+                    class="py-3 px-5 border-r border-border-gray dark:border-slate-800/80 whitespace-nowrap text-right font-bold font-mono">
+                  <span [class.text-emerald-600]="rec.type === 'INCOME'"
+                        [class.dark:text-emerald-400]="rec.type === 'INCOME'"
+                        [class.text-rose-600]="rec.type === 'EXPENSE'"
+                        [class.dark:text-rose-400]="rec.type === 'EXPENSE'">
+                    {{ rec.type === 'INCOME' ? '+' : '-' }}${{ rec.amount | number:'1.2-2' }}
+                  </span>
+                </td>
+                @if (isAdmin()) {
+                  <td class="py-3 px-5 text-center whitespace-nowrap">
+                    <div class="inline-flex items-center gap-1">
+                      <button (click)="openEditModal(rec)" 
+                              class="p-1.5 text-slate-400 hover:text-primary dark:hover:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                              title="Edit Record">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
+                      </button>
+                      <button (click)="onDeleteRecord(rec)" 
+                              class="p-1.5 text-slate-400 hover:text-rose-500 dark:hover:text-rose-450 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
+                              title="Delete Record">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+                  </td>
+                }
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination Controls Footer -->
+    <div class="px-6 py-4 border-t border-border-gray dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-text-secondary dark:text-slate-400">
+      <p>
+        Showing page {{ currentPage() }} of {{ totalPages() || 1 }} ({{ totalRecords() }} total transactions)
+      </p>
+      <div class="flex items-center gap-2">
+        <button [disabled]="currentPage() <= 1 || loading()"
+                (click)="changePage(currentPage() - 1)"
+                class="px-3 py-1.5 border border-border-gray dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer">
+          Previous
+        </button>
+        <button [disabled]="currentPage() >= totalPages() || loading()"
+                (click)="changePage(currentPage() + 1)"
+                class="px-3 py-1.5 border border-border-gray dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/40 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer">
+          Next
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ledger Creation/Edit Form Modal -->
+<app-modal [isOpen]="isModalOpen()" (dismiss)="closeModal()">
+  <app-record-modal [record]="selectedRecord()"
+                    [loading]="loading()"
+                    (dismiss)="closeModal()"
+                    (saveRecord)="onSaveRecord($event)">
+  </app-record-modal>
+</app-modal>

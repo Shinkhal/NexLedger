@@ -1,0 +1,140 @@
+<div class="space-y-6">
+  <!-- Modal Header -->
+  <div class="flex items-center justify-between pb-4 border-b border-border-gray dark:border-slate-800">
+    <h3 class="text-xl font-bold tracking-tight text-text-primary dark:text-white font-display">
+      {{ record() ? 'Edit Transaction Record' : 'Create New Transaction' }}
+    </h3>
+    <button (click)="dismiss.emit()" class="p-1.5 text-slate-400 hover:text-slate-650 dark:hover:text-slate-200 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Form -->
+  <form [formGroup]="recordForm" (ngSubmit)="onSubmit()" class="space-y-4">
+    <!-- Transaction Type (Income / Expense Switcher) -->
+    <div class="space-y-1.5">
+      <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
+      <label class="text-xs font-bold text-text-secondary dark:text-slate-350">Transaction Flow Type</label>
+      <div class="grid grid-cols-2 gap-3">
+        <button type="button" 
+                (click)="setType('INCOME')"
+                [class.bg-emerald-50]="recordForm.get('type')?.value === 'INCOME'"
+                [class.text-emerald-700]="recordForm.get('type')?.value === 'INCOME'"
+                [class.border-emerald-600]="recordForm.get('type')?.value === 'INCOME'"
+                [class.dark:bg-emerald-950/20]="recordForm.get('type')?.value === 'INCOME'"
+                [class.dark:text-emerald-400]="recordForm.get('type')?.value === 'INCOME'"
+                [class.border-border-gray]="recordForm.get('type')?.value !== 'INCOME'"
+                [class.dark:border-slate-800]="recordForm.get('type')?.value !== 'INCOME'"
+                class="py-2.5 rounded-xl border text-center font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+          Income Inflow
+        </button>
+        <button type="button" 
+                (click)="setType('EXPENSE')"
+                [class.bg-rose-50]="recordForm.get('type')?.value === 'EXPENSE'"
+                [class.text-rose-700]="recordForm.get('type')?.value === 'EXPENSE'"
+                [class.border-rose-600]="recordForm.get('type')?.value === 'EXPENSE'"
+                [class.dark:bg-rose-950/20]="recordForm.get('type')?.value === 'EXPENSE'"
+                [class.dark:text-rose-400]="recordForm.get('type')?.value === 'EXPENSE'"
+                [class.border-border-gray]="recordForm.get('type')?.value !== 'EXPENSE'"
+                [class.dark:border-slate-800]="recordForm.get('type')?.value !== 'EXPENSE'"
+                class="py-2.5 rounded-xl border text-center font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <span class="w-2.5 h-2.5 rounded-full bg-rose-600"></span>
+          Expense Outflow
+        </button>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="space-y-1.5">
+      <label for="desc" class="text-xs font-bold text-text-secondary dark:text-slate-350">Transaction Description</label>
+      <input id="desc" 
+             type="text" 
+             formControlName="description"
+             placeholder="e.g. Server hosting renewal invoice"
+             class="w-full px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary focus:border-transparent text-sm transition-all"
+             [class.border-red-500]="recordForm.get('description')?.invalid && recordForm.get('description')?.touched" />
+      @if (recordForm.get('description')?.invalid && recordForm.get('description')?.touched) {
+        <p class="text-xs text-red-500 font-medium">Description is required (minimum 3 characters)</p>
+      }
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Amount -->
+      <div class="space-y-1.5">
+        <label for="amount" class="text-xs font-bold text-text-secondary dark:text-slate-350">Amount (USD)</label>
+        <div class="relative">
+          <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 text-sm font-semibold pointer-events-none">$</span>
+          <input id="amount" 
+                 type="number" 
+                 formControlName="amount"
+                 placeholder="0.00"
+                 class="w-full pl-8 pr-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary focus:border-transparent text-sm transition-all"
+                 [class.border-red-500]="recordForm.get('amount')?.invalid && recordForm.get('amount')?.touched" />
+        </div>
+        @if (recordForm.get('amount')?.invalid && recordForm.get('amount')?.touched) {
+          <p class="text-xs text-red-500 font-medium">Amount must be greater than 0</p>
+        }
+      </div>
+
+      <!-- Category (Autocomplete or manual typing) -->
+      <div class="space-y-1.5">
+        <label for="category" class="text-xs font-bold text-text-secondary dark:text-slate-350">Category Name</label>
+        <input id="category" 
+               type="text" 
+               formControlName="category"
+               placeholder="Salary, Software, Consulting"
+               class="w-full px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary focus:border-transparent text-sm transition-all"
+               [class.border-red-500]="recordForm.get('category')?.invalid && recordForm.get('category')?.touched" />
+        @if (recordForm.get('category')?.invalid && recordForm.get('category')?.touched) {
+          <p class="text-xs text-red-500 font-medium">Category name is required</p>
+        }
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <!-- Date -->
+      <div class="space-y-1.5">
+        <label for="date" class="text-xs font-bold text-text-secondary dark:text-slate-350">Transaction Date</label>
+        <input id="date" 
+               type="date" 
+               formControlName="date"
+               class="w-full px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary focus:border-transparent text-sm transition-all" />
+      </div>
+
+      <!-- Tags (Comma separated list) -->
+      <div class="space-y-1.5">
+        <label for="tags" class="text-xs font-bold text-text-secondary dark:text-slate-350">Tags (comma-separated)</label>
+        <input id="tags" 
+               type="text" 
+               formControlName="tagsInput"
+               placeholder="e.g. q1, aws, remote"
+               class="w-full px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 bg-transparent text-text-primary dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-primary focus:border-transparent text-sm transition-all" />
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center justify-end gap-3 pt-4 border-t border-border-gray dark:border-slate-800">
+      <button type="button" 
+              (click)="dismiss.emit()"
+              class="px-4 py-2.5 rounded-xl border border-border-gray dark:border-slate-800 text-text-secondary dark:text-slate-350 hover:bg-slate-50 dark:hover:bg-slate-800/40 text-sm font-semibold transition-all">
+        Cancel
+      </button>
+      <button type="submit" 
+              [disabled]="recordForm.invalid || loading()"
+              class="px-5 py-2.5 rounded-xl bg-primary hover:bg-primary-dark text-white font-semibold text-sm shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2">
+        @if (loading()) {
+          <svg class="animate-spin h-4.5 w-4.5 text-white" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Saving...
+        } @else {
+          Save Transaction
+        }
+      </button>
+    </div>
+  </form>
+</div>

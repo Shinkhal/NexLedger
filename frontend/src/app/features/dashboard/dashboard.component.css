@@ -1,0 +1,60 @@
+/* Dashboard Component Styles */
+
+/* Fade-in animation for page load */
+:host {
+  display: block;
+}
+
+/* Smooth counter animation on stat cards */
+.stat-value {
+  animation: countUp 0.8s ease-out;
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Card hover lift effect */
+.group:hover {
+  transform: translateY(-1px);
+}
+
+/* SVG chart line animation */
+polyline {
+  animation: drawLine 1.5s ease-out;
+}
+
+@keyframes drawLine {
+  from { 
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+  }
+  to { 
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Donut ring animation */
+.stroke-primary {
+  animation: donutFill 1.2s ease-out;
+}
+
+@keyframes donutFill {
+  from { stroke-dashoffset: 226; }
+}
+
+/* Stagger animation for category bars */
+.transition-all.duration-700 {
+  animation: barGrow 0.8s ease-out;
+}
+
+@keyframes barGrow {
+  from { width: 0 !important; }
+}
+
+/* Timeline dot hover */
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
+}
