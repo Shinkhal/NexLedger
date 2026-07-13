@@ -15,7 +15,8 @@ class DatabaseConfig {
 
     const url = getEnv.database.mongo();
     
-    logger.debug(`Connecting to MongoDB: ${url.substring(0, 50)}...`);
+    const sanitizedUrl = url.replace(/\/\/[^:]+:[^@]+@/, '//***:***@');
+    logger.debug(`Connecting to MongoDB: ${sanitizedUrl.substring(0, 50)}...`);
 
     try {
       mongoose.connection.on("connected", () => {
