@@ -197,7 +197,7 @@
                         [class.dark:text-emerald-400]="rec.type === 'INCOME'"
                         [class.text-rose-600]="rec.type === 'EXPENSE'"
                         [class.dark:text-rose-400]="rec.type === 'EXPENSE'">
-                    {{ rec.type === 'INCOME' ? '+' : '-' }}${{ rec.amount | number:'1.2-2' }}
+                    {{ rec.type === 'INCOME' ? '+' : '-' }}₹{{ rec.amount | number:'1.2-2' }}
                   </span>
                 </td>
                 @if (isAdmin()) {

@@ -225,7 +225,7 @@ export class RecordsComponent implements OnInit {
 
     const confirmed = await this.confirmDialog.confirm({
       title: 'Delete Transaction Record',
-      message: `Are you sure you want to delete this record of $${record.amount} for "${record.description || record.category}"? This action cannot be undone.`,
+      message: `Are you sure you want to delete this record of ₹${record.amount} for "${record.description || record.category}"? This action cannot be undone.`,
       confirmText: 'Delete Record',
       cancelText: 'Cancel',
       type: 'danger',
