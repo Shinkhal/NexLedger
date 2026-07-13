@@ -1,0 +1,11 @@
+{
+  "buildCommand": "ng build",
+  "outputDirectory": "dist/NexLedger-frontend/browser",
+  "framework": "angular",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
