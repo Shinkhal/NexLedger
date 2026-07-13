@@ -12,6 +12,9 @@ import { apiLimiter } from './middlewares/rateLimiter.middleware';
 
 const app: Express = express();
 
+// Trust proxy (required for rate limiting behind reverse proxies like Render/Heroku)
+app.set('trust proxy', 1);
+
 // Root and health endpoints
 app.get('/', (_req: Request, res: Response) => {
 	return sendSuccess(
