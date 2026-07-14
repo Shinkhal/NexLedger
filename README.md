@@ -1,8 +1,30 @@
 # NexLedger
 
-NexLedger is a modern, full-stack financial ledger and audit management system designed for businesses to track their cash flow, categorize expenses, monitor analytics, and maintain rigorous system audit logs.
+**NexLedger** is a production-style financial management platform built with Angular, Express.js, MongoDB, and Bun. It enables organizations to securely manage income and expenses, monitor financial analytics, enforce role-based access control, and maintain comprehensive audit trails. The project demonstrates modern full-stack engineering practices, scalable architecture, and AI-assisted software development.
 
-Featuring a beautiful, premium user interface with interactive dashboards and a robust backend API, NexLedger provides everything needed to manage financial records seamlessly.
+---
+
+## 🔗 Live Demo
+
+* **Backend API Service:** [https://nexledger-x09a.onrender.com/api](https://nexledger-x09a.onrender.com/api)
+
+---
+
+## 📸 Screenshots
+
+Here is a preview of the NexLedger application interfaces:
+
+### 📊 Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
+
+### 🔑 Authentication
+![Authentication](docs/screenshots/auth.png)
+
+### 📁 Financial Records
+![Financial Records](docs/screenshots/records.png)
+
+### 🛡️ Audit Logs
+![Audit Logs](docs/screenshots/audit_logs.png)
 
 ---
 
@@ -34,6 +56,96 @@ Featuring a beautiful, premium user interface with interactive dashboards and a 
 
 ---
 
+## 🏗️ System Architecture
+
+The application uses a clean decoupled structure with a clear boundary between client and server:
+
+```text
+Angular 19 (Client)
+       ↓
+   Express API
+       ↓
+Business Services
+       ↓
+    MongoDB
+       ↓
+  Audit Logs
+```
+
+---
+
+## 📐 Engineering Decisions
+
+- **Feature-based Angular Architecture:** Organizes components, services, and routing by feature (e.g., Auth, Dashboard, Records) rather than component type, ensuring scalability as the codebase grows.
+- **Separation of Concerns:** Clear partitioning on the backend between Controllers (routing/validation), Services (business logic), and Models (data persistence).
+- **JWT Authentication:** Implemented stateless access/refresh token rotation stored securely, avoiding stateful session storage.
+- **Soft Deletion:** Primary financial records use a soft-deletion strategy to preserve ledger audit trail integrity.
+- **Runtime Validation:** Leverages Zod on the backend for request validation and type safety before hitting controllers.
+- **RBAC Middleware:** Centralized middleware handles role-based authorization rules securely across various endpoints.
+- **Tailwind CSS:** Utilized to accelerate UI development and maintain styling consistency.
+- **Bun Runtime:** Used on the backend to improve startup and compilation speed, along with package management efficiency.
+
+---
+
+## 🤖 AI Tools & Usage
+
+Evaluating developer productivity and AI utilization is an integral part of this assignment. Below is the documentation of how AI tools were integrated into the development workflow.
+
+### AI Tools Used
+* **ChatGPT** (Architectural design and conceptual modeling)
+* **GitHub Copilot** (Inline code completion and boilerplate generation)
+* **Cursor** (Context-aware repository navigation and refactoring)
+* **Google Gemini** (System orchestration, debugging, and comprehensive documentation review)
+
+### How AI Helped
+AI was used throughout development to accelerate productivity while maintaining full ownership of the implementation. Specifically, AI assisted with:
+* Brainstorming application architecture and folder structures.
+* Generating initial boilerplate for Angular components and Express routes.
+* Debugging Angular dependency injection issues, route guards, and interceptors.
+* Designing Mongoose schemas and defining indices for audit logs.
+* Improving API request validation rules using Zod.
+* Reviewing, refactoring, and linting code for professional readability.
+* Structuring and writing high-quality developer documentation.
+
+*Note: Every AI-generated suggestion was reviewed, modified, tested, and integrated manually to ensure safety, robustness, and style compliance.*
+
+---
+
+## 🧑‍💻 What I Implemented Myself
+
+While AI was used to accelerate development tasks, the entire core system design and implementation were handled manually:
+* **Overall Application Architecture:** Designed the monorepo structure and integration boundaries.
+* **Angular App Structure:** Created the core/shared/features layout and implemented lazy loading.
+* **Authentication Flow:** Built the frontend route guards, backend token validation, and credentials hashing.
+* **RBAC Implementation:** Designed and coded the backend permission middleware and frontend role-based view directives.
+* **Express API & MongoDB Schema Design:** Wrote schemas, indexes, and controllers manually.
+* **Audit Logging System:** Built the Mongoose hooks and service layer that record CRUD actions seamlessly.
+* **Financial Dashboard & Analytics:** Coded custom SVG charts and data transformation utility functions.
+* **Error Handling & Validation:** Structured error handler middleware and frontend reactive form validation.
+
+---
+
+## ⚠️ Challenges Faced
+
+- **Scalable Angular Directory Design:** Navigating features vs. shared organization, ensuring no circular dependencies between lazy-loaded modules.
+- **Stateful Audit Trails with Soft Delete:** Coordinating soft deletes with audit logs to ensure accurate history while keeping financial balances correctly synchronized.
+- **Robust Role-Based Authorization:** Implementing synchronized RBAC checks across both the client-side Angular router and backend Express routes to prevent API bypasses.
+- **Reusable Chart Components:** Coding dynamic SVG charts from scratch in Angular without heavy external libraries to keep the bundle size small and load times fast.
+
+---
+
+## 🔮 Future Improvements
+
+- **Multi-Tenant Organizations:** Support for isolated workspaces for different organizations or teams.
+- **Bank API Integration:** Connect to Plaid or similar services to sync real bank transactions.
+- **Real-Time Notifications:** Integrate WebSockets or Server-Sent Events (SSE) for audit trail alerts.
+- **Exports:** Support for exporting ledger records to PDF reports and CSV spreadsheets.
+- **Testing Expansion:** Comprehensive Unit and Integration testing suite for critical financial calculators.
+- **Dockerization:** Containerizing the frontend and backend for cloud-native deployment.
+- **CI/CD Pipeline:** GitHub Actions for automated linting, typechecking, and deployment to Render/Vercel.
+
+---
+
 ## 📂 Project Structure
 
 This is a monorepo containing both the frontend and backend applications:
@@ -48,6 +160,8 @@ NexLedger/
 │   │   ├── services/     # Business logic
 │   │   └── validations/  # Request validation
 │   └── ...
+├── docs/               # Documentation assets
+│   └── screenshots/    # Application mockup screenshots
 └── frontend/           # Angular Web App
     ├── src/
     │   ├── app/
@@ -96,7 +210,7 @@ Ensure you have the following installed on your machine:
 cd backend
 bun dev
 ```
-*The backend API will start on `http://localhost:3000`.*
+*The backend API will start on `http://localhost:5000` (configured in `.env`).*
 
 **Run the Frontend (Development Mode):**
 ```bash
