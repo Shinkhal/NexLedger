@@ -6,7 +6,8 @@
 
 ## 🔗 Live Demo
 
-* **Backend API Service:** [https://nexledger-x09a.onrender.com/api](https://nexledger-x09a.onrender.com/api)
+- **Frontend Web Application:** [https://nex-ledger-mu.vercel.app](https://nex-ledger-mu.vercel.app)
+- **Backend API Service:** [https://nexledger-x09a.onrender.com/api](https://nexledger-x09a.onrender.com/api)
 
 ---
 
@@ -17,27 +18,33 @@ Here is a preview of the NexLedger application interfaces:
 ### 📊 Dashboard
 ![Dashboard](docs/screenshots/dashboard.png)
 
-### 🔑 Authentication
-![Authentication](docs/screenshots/auth.png)
+### 🔑 Authentication (Login & Sign Up)
+<p align="center">
+  <img src="docs/screenshots/login.png" width="49%" alt="Login Screen" />
+  <img src="docs/screenshots/signup.png" width="49%" alt="Sign Up Screen" />
+</p>
 
 ### 📁 Financial Records
 ![Financial Records](docs/screenshots/records.png)
 
-### 🛡️ Audit Logs
-![Audit Logs](docs/screenshots/audit_logs.png)
+### 👤 User Profile & Role Info
+![User Profile](docs/screenshots/profile.png)
+
 
 ---
 
 ## 🚀 Tech Stack
 
 ### Frontend
+
 - **Framework:** Angular (v19)
 - **Styling:** Tailwind CSS (Modern, utility-first)
 - **Build Tool:** Angular CLI / Webpack
 - **Features:** Responsive design, Dark mode, Dynamic SVG charting, Reactive forms.
 
 ### Backend
-- **Runtime:** Bun 
+
+- **Runtime:** Bun
 - **Framework:** Express.js
 - **Database:** MongoDB (via Mongoose)
 - **Authentication:** JWT (JSON Web Tokens)
@@ -92,36 +99,39 @@ Business Services
 Evaluating developer productivity and AI utilization is an integral part of this assignment. Below is the documentation of how AI tools were integrated into the development workflow.
 
 ### AI Tools Used
-* **ChatGPT** (Architectural design and conceptual modeling)
-* **GitHub Copilot** (Inline code completion and boilerplate generation)
-* **Cursor** (Context-aware repository navigation and refactoring)
-* **Google Gemini** (System orchestration, debugging, and comprehensive documentation review)
+
+- **ChatGPT** (Architectural design and conceptual modeling)
+- **GitHub Copilot** (Inline code completion and boilerplate generation)
+- **Google Gemini** (System orchestration, debugging, and comprehensive documentation review)
 
 ### How AI Helped
-AI was used throughout development to accelerate productivity while maintaining full ownership of the implementation. Specifically, AI assisted with:
-* Brainstorming application architecture and folder structures.
-* Generating initial boilerplate for Angular components and Express routes.
-* Debugging Angular dependency injection issues, route guards, and interceptors.
-* Designing Mongoose schemas and defining indices for audit logs.
-* Improving API request validation rules using Zod.
-* Reviewing, refactoring, and linting code for professional readability.
-* Structuring and writing high-quality developer documentation.
 
-*Note: Every AI-generated suggestion was reviewed, modified, tested, and integrated manually to ensure safety, robustness, and style compliance.*
+AI was used throughout development to accelerate productivity while maintaining full ownership of the implementation. Specifically, AI assisted with:
+
+- Brainstorming application architecture and folder structures.
+- Generating initial boilerplate for Angular components and Express routes.
+- Debugging Angular dependency injection issues, route guards, and interceptors.
+- Designing Mongoose schemas and defining indices for audit logs.
+- Improving API request validation rules using Zod.
+- Reviewing, refactoring, and linting code for professional readability.
+- Structuring and writing high-quality developer documentation.
+
+_Note: Every AI-generated suggestion was reviewed, modified, tested, and integrated manually to ensure safety, robustness, and style compliance._
 
 ---
 
 ## 🧑‍💻 What I Implemented Myself
 
 While AI was used to accelerate development tasks, the entire core system design and implementation were handled manually:
-* **Overall Application Architecture:** Designed the monorepo structure and integration boundaries.
-* **Angular App Structure:** Created the core/shared/features layout and implemented lazy loading.
-* **Authentication Flow:** Built the frontend route guards, backend token validation, and credentials hashing.
-* **RBAC Implementation:** Designed and coded the backend permission middleware and frontend role-based view directives.
-* **Express API & MongoDB Schema Design:** Wrote schemas, indexes, and controllers manually.
-* **Audit Logging System:** Built the Mongoose hooks and service layer that record CRUD actions seamlessly.
-* **Financial Dashboard & Analytics:** Coded custom SVG charts and data transformation utility functions.
-* **Error Handling & Validation:** Structured error handler middleware and frontend reactive form validation.
+
+- **Overall Application Architecture:** Designed the monorepo structure and integration boundaries.
+- **Angular App Structure:** Created the core/shared/features layout and implemented lazy loading.
+- **Authentication Flow:** Built the frontend route guards, backend token validation, and credentials hashing.
+- **RBAC Implementation:** Designed and coded the backend permission middleware and frontend role-based view directives.
+- **Express API & MongoDB Schema Design:** Wrote schemas, indexes, and controllers manually.
+- **Audit Logging System:** Built the Mongoose hooks and service layer that record CRUD actions seamlessly.
+- **Financial Dashboard & Analytics:** Coded custom SVG charts and data transformation utility functions.
+- **Error Handling & Validation:** Structured error handler middleware and frontend reactive form validation.
 
 ---
 
@@ -161,7 +171,7 @@ NexLedger/
 │   │   └── validations/  # Request validation
 │   └── ...
 ├── docs/               # Documentation assets
-│   └── screenshots/    # Application mockup screenshots
+│   └── screenshots/    # Application screenshots
 └── frontend/           # Angular Web App
     ├── src/
     │   ├── app/
@@ -178,6 +188,7 @@ NexLedger/
 ### Prerequisites
 
 Ensure you have the following installed on your machine:
+
 - [Bun](https://bun.sh/) (for the backend)
 - [Node.js](https://nodejs.org/) & [npm](https://www.npmjs.com/) (for the frontend)
 - [MongoDB](https://www.mongodb.com/) (Local or Atlas URI)
@@ -185,16 +196,19 @@ Ensure you have the following installed on your machine:
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/Shinkhal/NexLedger.git
    cd NexLedger
    ```
 
 2. **Setup the Backend:**
+
    ```bash
    cd backend
    bun install
    ```
+
    Create a `.env` file in the `backend` directory (refer to `.env.example` if available) and add your `MONGO_URI`, `JWT_SECRET`, and `RESEND_API_KEY`.
 
 3. **Setup the Frontend:**
@@ -206,18 +220,22 @@ Ensure you have the following installed on your machine:
 ### Running the Application
 
 **Run the Backend (Development Mode):**
+
 ```bash
 cd backend
 bun dev
 ```
-*The backend API will start on `http://localhost:5000` (configured in `.env`).*
+
+_The backend API will start on `http://localhost:5000` (configured in `.env`)._
 
 **Run the Frontend (Development Mode):**
+
 ```bash
 cd frontend
 npm start
 ```
-*The Angular app will start on `http://localhost:4200`.*
+
+_The Angular app will start on `http://localhost:4200`._
 
 ---
 
